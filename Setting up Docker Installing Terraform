@@ -4,15 +4,16 @@
 - Installing Docker on the Swarm Manager and Worker
 
 These actions will be executed on both the Swarm manager and worker nodes.
-Update the operating system
 
-sudo yum update -y
+1. Update the operating system
+
+        sudo yum update -y
 
 - Prerequisites
 
-Uninstall old versions:
+2. Uninstall old versions:
 
-sudo yum remove -y docker \
+            sudo yum remove -y docker \
                   docker-client \
                   docker-client-latest \
                   docker-common \
@@ -23,62 +24,96 @@ sudo yum remove -y docker \
 
 - Install Docker CE
 
-Install Utils:
+3. Install Utils:
 
-sudo yum install -y yum-utils \
-  device-mapper-persistent-data \
-  lvm2
+      sudo yum install -y yum-utils \
+        device-mapper-persistent-data \
+        lvm2
 
-- Add the Docker repository:
+- 4. Add the Docker repository:
 
-sudo yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo
+      sudo yum-config-manager \
+          --add-repo \
+          https://download.docker.com/linux/centos/docker-ce.repo
 
-- Install Docker CE:
+- 5. Install Docker CE:
 
-sudo yum -y install docker-ce
+      sudo yum -y install docker-ce
 
-- Start Docker and enable it:
+- 6. Start Docker and enable it:
 
-sudo systemctl start docker && sudo systemctl enable docker
+      sudo systemctl start docker && sudo systemctl enable docker
 
-- Add cloud_user to the docker group:
+- 7. Add cloud_user to the docker group:
 
-sudo usermod -aG docker cloud_user
+      sudo usermod -aG docker cloud_user
 
-- Test the Docker installation:
+- 8. Test the Docker installation:
 
-docker --version
+      docker --version
+
+- 9. try this
+
+      docker container ls
+      
+      (no permission? logout and log back in to take changes effect)
+
+
+
 
 # Configuring Swarm Manager node
 
-On the manager node, initialize the manager:
+- 10. On the manager node, initialize the manager:
 
-docker swarm init \
---advertise-addr [PRIVATE_IP]
+      docker swarm init \
+      --advertise-addr [PRIVATE_IP]
+      
+      
 
 # Configure the Swarm Worker node
 
-On the worker node, add the worker to the cluster:
+- Log On the swarm WORKER node, add the worker to the cluster:
 
-docker swarm join --token [TOKEN] \
-[PRIVATE_IP]:2377
+(REPEAT EXACT SAME STEPS FROM THE TOP: 1-9)
+
+- LOG BACK TO swarm manaGER node
+
+      $ docker swarm join-token worker
+      
+      To add a worker to this swarm, run the following command:
+      
+      (copy the command from terminal)
+
+    $ docker swarm join --token SWMTKN-1-5gpz8ylca0f3dc2ee0v7ecm79clzwpb2kkml9n5q6uisemiy5x-5s4f68q47n6a8beta137uuo4c 172.31.47.23:2377
+      
+
+- LOG BACK TO swarm WORKER node
+
+(RUN the command here you copied from MANAGER node, you will see:)
+
+This node joined a swarm as a worker.           (GOOD job)
+
+
+
+- LOG BACK TO swarm MANAGER node
+
 
 Verify the Swarm cluster
 
 List Swarm nodes:
 
-docker node ls
+      docker node ls
 
-Install Terraform
+- Install Terraform
 
 Install Terraform 0.11.13 on the Swarm manager:
 
-sudo curl -O https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-sudo yum install -y unzip
-sudo unzip terraform_0.11.13_linux_amd64.zip -d /usr/local/bin/
+get the zip file
+
+          sudo curl -O https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+          sudo yum install -y unzip
+          sudo unzip terraform_0.11.13_linux_amd64.zip -d /usr/local/bin/
 
 Test the Terraform installation:
 
-terraform version
+      terraform version
