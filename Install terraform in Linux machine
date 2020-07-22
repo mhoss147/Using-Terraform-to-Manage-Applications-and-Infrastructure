@@ -1,0 +1,13 @@
+# Install terraform in Linux machine
+
+      Create the directory with the following command: mkdir terraform && cd terraform
+      
+      Then, download Terraform using this command: wget https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
+      
+      Install a program called ‘unzip’ in order to unpack the download by entering the following: Sudo yum install unzip
+      
+      Once installed, unpack the Terraform download: unzip terraform_0.11.14_linux_amd64.zip
+      
+      Set the Linux path to point to Terraform with the following command: export PATH=$PATH:$HOME/terraform
+      
+      Test that Terraform is installed by typing this command: terraform
